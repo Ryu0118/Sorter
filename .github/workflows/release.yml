@@ -1,0 +1,33 @@
+on:
+  release:
+    types: [published]
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode_14.3.app
+
+jobs:
+  build-release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build for release
+        run: make release
+      - name: Upload the binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: sorter
+          path: releases/sorter
+          retention-days: 14
+
+  deploy-binary:
+    needs: build-release
+    runs-on: macos-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: sorter
+
+      - name: Deploy the binary
+        uses: softprops/action-gh-release@v1
+        with:
+          files: sorter
