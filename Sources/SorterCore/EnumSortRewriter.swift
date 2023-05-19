@@ -5,6 +5,16 @@ final class EnumSortRewriter: SyntaxRewriter {
     override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
         var members = node.memberBlock.members
         var enumCases = members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
+        let otherDeclIndexes = members
+            .enumerated()
+            .compactMap { index, member in
+                if member.decl.as(EnumCaseDeclSyntax.self) == nil {
+                    return index
+                } else {
+                    return nil
+                }
+            }
+
         var elementLists = enumCases.map(\.elements)
 
         // enum E1 {
@@ -33,6 +43,7 @@ final class EnumSortRewriter: SyntaxRewriter {
                 $0.with(\.decl, $1.cast(DeclSyntax.self))
             }
         )
+        .inserting(otherDeclIndexes.map { ($0, members.array[$0]) })
 
         return super.visit(node.with(\.memberBlock.members, members))
     }
@@ -70,5 +81,21 @@ final class EnumSortRewriter: SyntaxRewriter {
             }
 
         return EnumCaseElementListSyntax(elements)
+    }
+}
+
+extension MemberDeclListSyntax {
+    func inserting(_ elements: [(Int, Element)]) -> MemberDeclListSyntax {
+        var copy = self
+        for (at, element) in elements.sorted(by: { $0.0 < $1.0 }) {
+            copy = copy.inserting(element, at: at)
+        }
+        return copy
+    }
+}
+
+extension SyntaxCollection {
+    var array: [Element] {
+        Array(self)
     }
 }

@@ -55,3 +55,6 @@ enum SorterError: LocalizedError {
         }
     }
 }
+struct Hoge {
+    let hoge: String
+}
