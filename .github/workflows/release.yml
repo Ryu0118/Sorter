@@ -2,13 +2,13 @@ on:
   release:
     types: [published]
 
-env:
-  DEVELOPER_DIR: /Applications/Xcode_14.3.app
-
 jobs:
   build-release:
     runs-on: macos-latest
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
       - uses: actions/checkout@v2
       - name: Build for release
         run: make release
