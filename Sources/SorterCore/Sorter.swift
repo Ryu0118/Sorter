@@ -7,13 +7,11 @@
 
 import Foundation
 import SwiftParser
+import SwiftSyntax
 
 public enum Sorter {
     public static func sort(fileURL: URL) throws {
-        let data = try Data(contentsOf: fileURL)
-        let syntax = SwiftParser.Parser.parse(source: String(data: data, encoding: .utf8) ?? "")
-        let formatted = EnumSortRewriter().visit(syntax)
-        try formatted.description.write(to: fileURL, atomically: true, encoding: .utf8)
+        try sort(fileURL: fileURL, rewriter: [EnumSortRewriter()])
     }
 
     public static func sortRecursively(directory: URL) throws {
@@ -27,6 +25,15 @@ public enum Sorter {
                 try sort(fileURL: fileURL)
             }
         }
+    }
+
+    public static func sort(fileURL: URL, rewriter: [SyntaxRewriter]) throws {
+        let data = try Data(contentsOf: fileURL)
+        let syntax = SwiftParser.Parser.parse(source: String(data: data, encoding: .utf8) ?? "")
+        let formattedNode = rewriter.reduce(syntax) { partialResult, rewriter in
+            rewriter.visit(syntax)
+        }
+        try formattedNode.description.description.write(to: fileURL, atomically: true, encoding: .utf8)
     }
 }
 
