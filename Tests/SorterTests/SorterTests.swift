@@ -1,18 +1,10 @@
-// 
-//  SorterTests.swift
-//  
-//
-//  Created by ryunosuke.shibuya on 2023/05/20.
-//
-
 import Foundation
 import XCTest
 @testable import SorterCore
 import SwiftParser
 
 final class SorterTests: XCTestCase {
-    func testEmptyRewriter() {
-
+    func testEnumSortRewriter() {
         let `enum` =
         """
         enum E1 {
@@ -43,8 +35,34 @@ final class SorterTests: XCTestCase {
             case j
         }
         """
+
         let syntax = Parser.parse(source: `enum`)
         let formatted = EnumSortRewriter().visit(syntax)
+
+        XCTAssertEqual(formatted.description, expected)
+    }
+
+    func testImportSortRewriter() {
+        let `import` =
+        """
+        import UIKit
+        import SwiftUI
+        import ComposableArchitecture
+        import CoreData
+        import class UIKit.UIImage
+        """
+        let expected =
+        """
+        import ComposableArchitecture
+        import CoreData
+        import SwiftUI
+        import UIKit
+        import class UIKit.UIImage
+        """
+
+        let syntax = Parser.parse(source: `import`)
+        let formatted = ImportSortRewriter().visit(syntax)
+
         XCTAssertEqual(formatted.description, expected)
     }
 }

@@ -1,7 +1,9 @@
 import Foundation
 import SwiftSyntax
 
-final class EnumSortRewriter: SyntaxRewriter {
+final class EnumSortRewriter: Rewriter, RuleNameContainable {
+    static let ruleName: String = "enum_case"
+
     override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
         var members = node.memberBlock.members
         var enumCases = members.compactMap { $0.decl.as(EnumCaseDeclSyntax.self) }
@@ -69,15 +71,12 @@ final class EnumSortRewriter: SyntaxRewriter {
             .sorted {
                 $0.identifier.text.localizedStandardCompare($1.identifier.text) == .orderedAscending
             }
-            .enumerated()
-            .map { index, element in
-                var element = element
+            .inoutEnumeratedMap { index, element in
                 if index == elementList.count - 1 {
                     element.trailingComma = nil
                 } else {
                     element.trailingComma = .commaToken(trailingTrivia: .space)
                 }
-                return element
             }
 
         return EnumCaseElementListSyntax(elements)
