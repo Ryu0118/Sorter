@@ -8,12 +8,12 @@ enum RewriterProvider {
 
     static let all = allRewriters.map { $0.init() }
 
-    static func provide(from directory: URL, ruleFileName: String = "sorter") throws -> [any RuleNameContainable] {
-        let rule = try loadRuleFile(directory: directory, ruleFileName: ruleFileName)
+    static func provide(from ruleFileDirectory: URL) throws -> [any RuleNameContainable] {
+        let rule = try loadRuleFile(directory: ruleFileDirectory)
         return try provide(rule)
     }
 
-    private static func provide(_ rule: Rule) throws -> [any RuleNameContainable] {
+    static func provide(_ rule: Rule) throws -> [any RuleNameContainable] {
         try rule.enabled.map { ruleName in
             if let rewriter = allRewriters.first(where: { $0.ruleName == ruleName }) {
                 return rewriter.init()
@@ -23,9 +23,7 @@ enum RewriterProvider {
         }
     }
 
-    private static func loadRuleFile(directory: URL, ruleFileName: String) throws -> Rule {
-        let directory = directory.appendingPathComponent(ruleFileName)
-
+    private static func loadRuleFile(directory: URL) throws -> Rule {
         if FileManager.default.fileExists(atPath: directory.absoluteString) {
             let content = try Data(contentsOf: directory)
             let string = String(data: content, encoding: .utf8) ?? ""
@@ -43,7 +41,7 @@ enum RewriterProviderError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .cannotFindRule(let name):
-            return "\(name) does not exist."
+            return "rule: \(name) does not exist."
         }
     }
 }

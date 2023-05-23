@@ -10,14 +10,33 @@ struct Sorter: ParsableCommand {
     @Option(name: .shortAndLong, help: "Project Path you want to sort")
     var project: String?
 
+    @Option(name: .customLong("rule-path"), help: "Explicitly specify the path to the file in which the rules to be enabled are listed")
+    var rulePath: String?
+
+    @Option(name: .long, help: "Specify the rule. To specify multiple rules, write rules separated by commas.")
+    var rules: String?
+
     static let _commandName: String = "sorter"
 
     mutating func run() throws {
         if let file {
-            try SorterCore.Sorter.sort(fileURL: URL(fileURLWithPath: file))
+            if let rulePath {
+                try SorterCore.Sorter.sort(fileURL: URL(fileURLWithPath: file), rulePath: rulePath)
+            }
+            else if let rules {
+                try SorterCore.Sorter.sort(fileURL: URL(fileURLWithPath: file), rules: rules)
+            }
+            else {
+                try SorterCore.Sorter.sort(fileURL: URL(fileURLWithPath: file))
+            }
         }
         else if let project {
-            try SorterCore.Sorter.sortRecursively(directory: URL(fileURLWithPath: project))
+            if let rules {
+                try SorterCore.Sorter.sortRecursively(directory: URL(fileURLWithPath: project), rules: rules)
+            }
+            else {
+                try SorterCore.Sorter.sortRecursively(directory: URL(fileURLWithPath: project), rulePath: rulePath)
+            }
         }
     }
 
@@ -54,7 +73,4 @@ enum SorterError: LocalizedError {
             return "\(path) is a directory"
         }
     }
-}
-struct Hoge {
-    let hoge: String
 }
