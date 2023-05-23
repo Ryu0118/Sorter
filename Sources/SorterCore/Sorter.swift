@@ -49,7 +49,7 @@ public enum Sorter {
         }
 
         for case let fileURL as URL in enumerator {
-            let fileAttributes = try fileURL.resourceValues(forKeys:[.isRegularFileKey])
+            let fileAttributes = try fileURL.resourceValues(forKeys: [.isRegularFileKey])
             if fileAttributes.isRegularFile!, fileURL.pathExtension == "swift" {
                 try sort(fileURL: fileURL, rewriter: rewriters)
             }
@@ -64,10 +64,6 @@ public enum Sorter {
         }
         try formattedNode.description.description.write(to: fileURL, atomically: true, encoding: .utf8)
     }
-}
-
-struct Rule {
-    let enabled: [String]
 }
 
 enum SorterError: LocalizedError {

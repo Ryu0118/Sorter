@@ -53,6 +53,9 @@ struct Sorter: ParsableCommand {
         else if let file, URL(fileURLWithPath: file).hasDirectoryPath {
             throw SorterError.notFile(path: file)
         }
+        else if let rulePath, !FileManager.default.fileExists(atPath: rulePath) {
+            throw SorterError.ruleFileNotFound(path: rulePath)
+        }
     }
 }
 
@@ -60,10 +63,14 @@ enum SorterError: LocalizedError {
     case notDirectory(path: String)
     case notFile(path: String)
     case projectNotFound(path: String)
+    case ruleFileNotFound(path: String)
 
     var errorDescription: String? {
         switch self {
         case .projectNotFound(let path):
+            return "\(path) could not be found"
+
+        case .ruleFileNotFound(let path):
             return "\(path) could not be found"
 
         case .notDirectory(let path):

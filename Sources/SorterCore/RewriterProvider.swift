@@ -24,11 +24,14 @@ enum RewriterProvider {
     }
 
     private static func loadRuleFile(directory: URL) throws -> Rule {
-        if FileManager.default.fileExists(atPath: directory.absoluteString) {
+        if FileManager.default.fileExists(atPath: directory.pathComponents.joined(separator: "/")) {
             let content = try Data(contentsOf: directory)
             let string = String(data: content, encoding: .utf8) ?? ""
-
-            return Rule(enabled: string.components(separatedBy: "\n"))
+            let ruleNames = string
+                .components(separatedBy: "\n")
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+            return Rule(enabled: ruleNames)
         } else {
             return Rule(enabled: allRewriters.map { $0.ruleName })
         }

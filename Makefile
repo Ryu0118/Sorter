@@ -13,4 +13,4 @@ release:
 
 .PHONY: sorter
 sorter:
-	mint run sorter -p .
+	mint run sorter -p . --rule-path ./sorter_config
