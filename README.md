@@ -58,3 +58,9 @@ $ sorter -p ~/MyProject --rules import,enum_case
 ```
 $ sorter -p ~/MyProject --rule-path ~/MyProject/sorter
 ```
+
+## Future Features
+- [ ] Sort by access modifiers
+- [ ] Sort switch cases
+- [ ] Sort dependencies in Package.swift
+- [ ] Sort imports separately for standard and external libraries
