@@ -1,6 +1,12 @@
 # Sorter
 Swift CLI tool to reorder enum cases, imports, etc.
 
+## Installation
+### Mint
+```
+Ryu0118/Sorter@0.0.2
+```
+
 ## Usage
 ```
 USAGE: sorter [--file <file>] [--project <project>] [--rule-path <rule-path>] [--rules <rules>]
