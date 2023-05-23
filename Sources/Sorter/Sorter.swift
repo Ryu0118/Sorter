@@ -57,9 +57,9 @@ struct Sorter: ParsableCommand {
 }
 
 enum SorterError: LocalizedError {
-    case projectNotFound(path: String)
     case notDirectory(path: String)
     case notFile(path: String)
+    case projectNotFound(path: String)
 
     var errorDescription: String? {
         switch self {
