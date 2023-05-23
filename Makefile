@@ -11,4 +11,6 @@ release:
 	cp sorter releases/sorter
 	rm sorter
 
-
+.PHONY: sorter
+sorter:
+	mint run sorter -p .

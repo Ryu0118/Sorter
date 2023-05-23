@@ -1,7 +1,7 @@
 import Foundation
-import XCTest
 @testable import SorterCore
 import SwiftParser
+import XCTest
 
 final class SorterTests: XCTestCase {
     func testEnumSortRewriter() {
