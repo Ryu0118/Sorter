@@ -6,6 +6,10 @@ Swift CLI tool to reorder enum cases, imports, etc.
 ```
 Ryu0118/Sorter@0.0.2
 ```
+### homebrew
+```
+$ brew install Ryu0118/sorter/sorter
+```
 
 ## Usage
 ```
