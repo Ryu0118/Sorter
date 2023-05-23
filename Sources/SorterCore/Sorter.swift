@@ -1,17 +1,15 @@
-// 
-//  Sorter.swift
-//  
-//
-//  Created by ryunosuke.shibuya on 2023/05/19.
-//
-
 import Foundation
 import SwiftParser
 import SwiftSyntax
 
 public enum Sorter {
+    static let allRewriters: [any RuleNameContainable.Type] = [
+        EnumSortRewriter.self,
+        ImportSortRewriter.self
+    ]
+
     public static func sort(fileURL: URL) throws {
-        try sort(fileURL: fileURL, rewriter: [EnumSortRewriter()])
+        try sort(fileURL: fileURL, rewriter: allRewriters.map { $0.init() })
     }
 
     public static func sortRecursively(directory: URL) throws {
@@ -27,11 +25,11 @@ public enum Sorter {
         }
     }
 
-    public static func sort(fileURL: URL, rewriter: [SyntaxRewriter]) throws {
+    public static func sort(fileURL: URL, rewriter: [Rewriter]) throws {
         let data = try Data(contentsOf: fileURL)
         let syntax = SwiftParser.Parser.parse(source: String(data: data, encoding: .utf8) ?? "")
         let formattedNode = rewriter.reduce(syntax) { partialResult, rewriter in
-            rewriter.visit(syntax)
+            rewriter.visit(partialResult)
         }
         try formattedNode.description.description.write(to: fileURL, atomically: true, encoding: .utf8)
     }
