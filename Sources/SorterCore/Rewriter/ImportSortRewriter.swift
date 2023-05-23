@@ -2,7 +2,7 @@ import Foundation
 import SwiftSyntax
 
 final class ImportSortRewriter: Rewriter, RuleNameContainable {
-    static let ruleName: String = "import_sort"
+    static let ruleName: String = "import"
 
     override func visit(_ node: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
         let imports = node
