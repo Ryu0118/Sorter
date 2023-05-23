@@ -2,11 +2,12 @@
 Swift CLI tool to reorder enum cases, imports, etc.
 
 ## Installation
-### Mint
+#### Mint
 ```
 Ryu0118/Sorter@0.0.2
 ```
-### homebrew
+
+#### homebrew
 ```
 $ brew install Ryu0118/sorter/sorter
 ```
@@ -24,7 +25,36 @@ OPTIONS:
                           rules separated by commas.
   -h, --help              Show help information.
 ```
+### To Use sorter in a project
+Create a file named `sorter` in the root directory of the project, <br>
+and list the rules you want to enable there as follows
+```
+import
+enum_case
+```
 
-### Rules
+## Rules
 - import
 - enum_case
+
+## Examples
+
+#### Specify a file
+```
+$ sorter -f test.swift
+```
+
+#### Specify a project
+```
+$ sorter -p ~/MyProject
+```
+
+#### Specify the rule
+```
+$ sorter -p ~/MyProject --rules import,enum_case
+```
+
+#### Explicitly specify the file path where custom rules are listed
+```
+$ sorter -p ~/MyProject --rule-path ~/MyProject/sorter
+```
