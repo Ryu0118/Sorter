@@ -4,7 +4,7 @@ Swift CLI tool to reorder enum cases, imports, etc.
 ## Installation
 #### Mint
 ```
-Ryu0118/Sorter@0.1.0
+Ryu0118/Sorter@0.1.1
 ```
 
 #### homebrew
