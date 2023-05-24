@@ -26,15 +26,17 @@ final class ImportSortRewriter: Rewriter, RuleNameContainable {
                 return first.localizedStandardCompare(second) == .orderedAscending
             }
             .inoutEnumeratedMap { index, element in
-                let importDecl = imports[index].importDecl
+                let importCodeBlock = imports[index]
+                let importDecl = importCodeBlock.importDecl
                 element.importDecl.leadingTrivia = importDecl.leadingTrivia
                 element.importDecl.trailingTrivia = importDecl.trailingTrivia
+                element.index = importCodeBlock.index
             }
 
         let formattedItems = node
             .enumerated()
             .map { index, codeBlockItem in
-                if let formattedImport = formattedImports[safe: index] {
+                if let formattedImport = formattedImports.first(where: { $0.index == index }) {
                     return codeBlockItem.with(\.item, formattedImport.importDecl.cast(CodeBlockItemSyntax.Item.self))
                 } else {
                     return codeBlockItem
@@ -47,7 +49,7 @@ final class ImportSortRewriter: Rewriter, RuleNameContainable {
 
 extension ImportSortRewriter {
     struct ImportCodeBlock {
-        let index: Int
+        var index: Int
         var importDecl: ImportDeclSyntax
     }
 }

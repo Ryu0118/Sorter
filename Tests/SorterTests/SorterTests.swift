@@ -49,6 +49,9 @@ final class SorterTests: XCTestCase {
         import SwiftUI
         import ComposableArchitecture
         import CoreData
+        struct Hoge {
+            let hoge: String
+        }
         import class UIKit.UIImage
         """
         let expected =
@@ -57,6 +60,9 @@ final class SorterTests: XCTestCase {
         import CoreData
         import SwiftUI
         import UIKit
+        struct Hoge {
+            let hoge: String
+        }
         import class UIKit.UIImage
         """
 
