@@ -64,3 +64,4 @@ $ sorter -p ~/MyProject --rule-path ~/MyProject/sorter
 - [ ] Sort switch cases
 - [ ] Sort dependencies in Package.swift
 - [ ] Sort imports separately for standard and external libraries
+- [ ] Build Tool Plugin
