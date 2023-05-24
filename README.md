@@ -1,10 +1,10 @@
 <div align="center">  
   
-  # Kusa
+  # Sorter
   
   #### Swift CLI tool to reorder enum cases, imports, etc.
   
-  ![Language:Rust](https://img.shields.io/static/v1?label=Language&message=Swift&color=green&style=flat-square)
+  ![Language:Swift](https://img.shields.io/static/v1?label=Language&message=Swift&color=green&style=flat-square)
   ![License:MIT](https://img.shields.io/static/v1?label=License&message=MIT&color=blue&style=flat-square)
   [![Latest Release](https://img.shields.io/github/v/release/Ryu0118/Sorter?style=flat-square)](https://github.com/Ryu0118/Sorter/releases/latest)
   [![Twitter](https://img.shields.io/twitter/follow/ryu_hu03?style=social)](https://twitter.com/ryu_hu03)
